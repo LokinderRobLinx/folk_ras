@@ -1,0 +1,101 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  /* background-color: ; */
+  /* font-family: ; */
+}
+
+a {
+  text-decoration: inherit;
+  /* text-decoration: none; */
+  color: yellow;
+}
+a:hover {
+  color: orangered;
+}
+
+li {
+  list-style: none;
+}
+
+.btn {
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  /* display: inline-block; */
+  padding: 10px 30px;
+  border-radius: 50px;
+  transition: 0.5s;
+  color: blue;
+  border: 2px solid blue;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: blue;
+  color: #fff !important;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+.spinner-border {
+  height: 100px;
+  width: 100px;
+}
+
+/* #Main Landing Section Home Page  */
+
+/* #header { */
+/* width: 100%; */
+/* height: 49vh; */
+/* margin-top: 70px; */
+/* } */
+
+#header h1 {
+  margin: 0 0 10px 0;
+  font-size: 40px;
+  font-weight: 700;
+  color: green;
+}
+
+#header .brand-name {
+  color: blue;
+}
+
+#header h2 {
+  color: #484848;
+  font-size: 24px;
+}
+
+/* projects.js style */
+
+.proImg {
+  height: 200px;
+  width: 200px;
+  margin-top: 10px;
+  border-radius: 10%;
+}
+.proImg:hover {
+  transform: scale(1.07);
+  transition: 1s ease-out;
+}

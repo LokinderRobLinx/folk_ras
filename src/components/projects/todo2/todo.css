@@ -1,0 +1,69 @@
+.formToDo input {
+  width: 80%;
+  height: 3.4rem;
+  padding: 2rem 1.2rem;
+  font-size: 1.8rem;
+  line-height: 1.42857143;
+  margin-top: 2rem;
+  color: rgb(58, 57, 57);
+  background-color: #fff;
+  background-image: none;
+  border: 0.1rem solid black;
+  border-radius: 0.4rem;
+  -webkit-box-shadow: inset 0 0.1rem 0.1rem rgb(0 0 0 / 8%);
+  box-shadow: inset 0 0.1rem 0.1rem rgb(0 0 0 / 8%);
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.liComplete {
+  /* display: flex;
+    justify-content: space-between; */
+
+  padding: 1.2rem 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem auto;
+  width: 80%;
+
+  /* color: red; */
+  background: gray;
+  display: flex;
+  justify-content: space-between;
+}
+
+.li {
+  padding: 1.2rem 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem auto;
+  width: 80%;
+
+  color: #fff;
+  background: rgb(8, 252, 109);
+  display: flex;
+  justify-content: space-between;
+}
+
+.todoList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* margin-left: 2rem; */
+}
+
+.texth3 {
+  /* text-decoration: line-through; */
+  text-decoration-line: line-through;
+}
+
+.text {
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  margin-left: 1rem;
+}
+/* .textComplete{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2rem;
+    
+} */
