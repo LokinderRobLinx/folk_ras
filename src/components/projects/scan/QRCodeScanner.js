@@ -1,69 +1,97 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { RNCamera } from 'react-native-camera';
-import axios from 'axios';
+import { Html5QrcodeScanner } from 'html5-qrcode';
+import React, { useEffect, useState, useRef } from 'react';
 
 const QRCodeScanner = () => {
-  const [scanned, setScanned] = useState(false);
+  const [scanResult, setScanResult] = useState(null);
+  const videoRef = useRef(null);
+  const scannerRef = useRef(null);
 
   useEffect(() => {
-    if (scanned) {
-      // Perform API request here with the scanned QR code data
-      // Replace with your API endpoint and data handling logic
-      axios.post('YOUR_API_ENDPOINT', { qrCodeData: 'YOUR_SCANNED_DATA' })
-        .then(response => {
-          console.log('QR Code data saved:', response.data);
-        })
-        .catch(error => {
-          console.error('Error saving QR Code data:', error);
-        });
-    }
-  }, [scanned]);
+    const qrCodeId = 'reader';
+    const scanner = new Html5QrcodeScanner(qrCodeId, {
+      qrbox: {
+        width: 250,
+        height: 250,
+      },
+      fps: 5,
+    });
 
-  const handleBarCodeScanned = ({ data }) => {
-    setScanned(true);
-    alert(`Scanned QR Code: ${data}`);
+    // Save the scanner instance to the ref
+    scannerRef.current = scanner;
+
+    // Define a flag to track whether a successful scan has occurred
+    let scanned = false;
+
+    scanner.render(success, error);
+
+    function success(result) {
+      if (!scanned) {
+        scanned = true;
+        scanner.clear();
+        setScanResult(result);
+        removeVideoElement(qrCodeId);
+      }
+    }
+
+    function error(err) {
+      console.warn(err);
+    }
+
+    // Helper function to remove the video element from the DOM
+    function removeVideoElement(elementId) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        const videoElement = element.querySelector('video');
+        if (videoElement) {
+          videoElement.srcObject.getTracks().forEach((track) => track.stop());
+        }
+        element.removeChild(videoElement);
+      }
+    }
+
+    // Cleanup when the component unmounts
+    return () => {
+      scanner.clear();
+    };
+  }, []);
+
+  // Function to start scanning again
+  const startScanningAgain = () => {
+    setScanResult(null);
+    const scanner = scannerRef.current;
+    if (scanner) {
+      scanner.render();
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <RNCamera
-        style={styles.preview}
-        onBarCodeRead={handleBarCodeScanned}
-        captureAudio={false}
-      />
-      {!scanned && (
-        <TouchableOpacity style={styles.button} onPress={() => setScanned(false)}>
-          <Text style={styles.buttonText}>Scan QR Code</Text>
-        </TouchableOpacity>
+    <div>
+      <h1>QR Code Scanning React App</h1>
+      {scanResult ? (
+        <div>
+          Success:{" "}
+          <a
+            href={scanResult}
+            style={{ cursor: "pointer", color: "green" }}
+            title="Visit The Site"
+            target="_blank"
+            //  rel="noopener noreferrer"
+          >
+            {scanResult}
+          </a>
+
+          <br/>
+          <div id="reader" ref={videoRef}></div>
+          <button className='my-3' onClick={startScanningAgain}>Scan Again</button>
+        </div>
+      ) : (
+        <div>
+          <div id="reader" ref={videoRef}></div>
+          <button className='my-3' onClick={startScanningAgain}>Scan Again</button>
+        </div>
       )}
-    </View>
+    </div>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  preview: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 10,
-    margin: 20,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
 
 export default QRCodeScanner;

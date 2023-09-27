@@ -24,7 +24,7 @@ import Login from "./components/layout/Login";
 import { useState } from "react";
 import AddUser from "./components/projects/card/AddUser";
 import GetUser from "./components/projects/card/GetUser";
-import QRCodeScanner from "./components/projects/scan/QRCodeScanner1";
+import QRCodeScanner from "./components/projects/scan/QRCodeScanner";
 
 
 
