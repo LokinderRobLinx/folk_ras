@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 // import { NavDropdown } from 'react-bootstrap'
 import { Link, Navigate, NavLink } from "react-router-dom";
-import logo from "../assets/lion.png"
+import logo from "../assets/lion.png";
 
-const Navbar = () => {
+const Navbar = ({ username, onLogout }) => {
   const [show, setShow] = useState(false);
+
+  const [loggedInNav, setLoggedInNav] = useState(
+    localStorage.token ? true : false
+  );
+
+  const handleLogout = () => {
+    // Call the onLogout function to log the user out
+    onLogout();
+  };
 
   return (
     <>
@@ -15,7 +24,7 @@ const Navbar = () => {
               <img src={logo} alt="logo" className="logoImg" />
               <h2>
                 <span>F</span>olk
-                <span>R</span>as
+                <span>R</span>aas
               </h2>
             </Link>
 
@@ -34,81 +43,134 @@ const Navbar = () => {
 
             <div className={`collapse navbar-collapse ${show ? "show" : ""}`}>
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/scan">
-                    ScanQR
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/add-user">
-                    Add User
-                  </NavLink>
-                </li>
-                {/* <li className="nav-item">
-                  <NavLink className="nav-link" to="/get-user">
-                    Users
-                  </NavLink>
-                </li> */}
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/todofb">
-                    Users
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/todo">
-                    Cards
-                  </NavLink>
-                </li>
-
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    User
-                  </a>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="navbarDropdown"
-                  >
-                    <li>
-                      <Link to="/profile" className="dropdown-item">
-                        Profile
-                      </Link>
+                {/* {loggedInNav ? ( */}
+                {username ? (
+                  <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/scan">
+                        ScanQR
+                      </NavLink>
                     </li>
-                    <li>
-                      <Link to="#" className="dropdown-item">
-                        Logout
-                      </Link>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/add-user">
+                        Add User
+                      </NavLink>
                     </li>
-                    <li>
-                      <hr className="dropdown-divider" />
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/users">
+                        Users
+                      </NavLink>
                     </li>
-                    <li>
-                      <Link to="#" className="dropdown-item">
-                        Something else
-                      </Link>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/cards">
+                        Cards
+                      </NavLink>
+                    </li>
+                    <li className="nav-item dropdown">
+                      <NavLink
+                       to="/clock"
+                        type="button"
+                        className="nav-link dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        {/* {loggeduser.name} */}
+                        {username}
+                      </NavLink>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <NavLink to="/profile" className="dropdown-item">
+                            Profile
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink to="/contact" className="dropdown-item">
+                            {/* {loggeduser.email} */}
+                            Contact
+                          </NavLink>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <NavLink
+                            to="/login"
+                            className="dropdown-item"
+                            onClick={handleLogout}
+                          >
+                            LogOut
+                          </NavLink>
+                        </li>
+                      </ul>
                     </li>
                   </ul>
-                </li>
-
+                ) : (
+                  <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/scan">
+                        ScanQR
+                      </NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/get-users">
+                        Users
+                      </NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/get-cards">
+                        Cards
+                      </NavLink>
+                    </li>
+                    {/* <li className="nav-item">
+                      <NavLink className="nav-link" to="/about">
+                        About
+                      </NavLink>
+                    </li> */}
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/contact">
+                        Contact
+                      </NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/login">
+                        Login
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
 
                 <div className="social-links">
-                  <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" title="Facebook">
-                    <i class='fab fa-facebook-f' />
+                  <a
+                    href="https://www.facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Facebook"
+                  >
+                    <i class="fab fa-facebook-f" />
                   </a>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" title="Twitter">
-                    <i class='fab fa-twitter' />
+                  <a
+                    href="https://twitter.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Twitter"
+                  >
+                    <i class="fab fa-twitter" />
                   </a>
-                  <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" title="Instagram">
-                    <i class='fab fa-instagram' />
+                  <a
+                    href="https://www.instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Instagram"
+                  >
+                    <i class="fab fa-instagram" />
                   </a>
-                  <a href="https://www.linkedin.com/in/lokinder007/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
-                    <i class='fab fa-linkedin-in' />
+                  <a
+                    href="https://www.linkedin.com/in/lokinder007/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="LinkedIn"
+                  >
+                    <i class="fab fa-linkedin-in" />
                   </a>
                 </div>
               </ul>

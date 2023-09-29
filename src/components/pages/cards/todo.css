@@ -111,7 +111,7 @@
   margin: 1rem auto;
   width: 80%;
 
-  color: red;
+  color: white;
   background: gray;
   display: flex;
   justify-content: space-between;
@@ -156,14 +156,6 @@
 
 .eachItem:hover .fa-trash-alt {
   color: red;
-}
-
-.eachItem:hover .fa-edit {
-  color: green;
-}
-
-.eachItem:hover h3 {
-  color: blue;
 }
 
 .Tbtn {

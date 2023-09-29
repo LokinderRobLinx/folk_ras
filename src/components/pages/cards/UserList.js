@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Todo from "./Todo";
 import todo from "../../assets/todo_list.jpg";
 import { db } from "./firebase";
 import "./todo.css";
@@ -9,13 +8,16 @@ import {
   onSnapshot,
   updateDoc,
   doc,
-  addDoc,
   deleteDoc,
+  where,
+  getDocs,
 } from "firebase/firestore";
 
-const TodoPage = () => {
+const UserList = () => {
   const [users, setUsers] = useState([]);
   const [cards, setCards] = useState([]);
+  const [check, setCheck] = useState(false);
+
   const [userNames, setuserNames] = useState([]);
   // const [input, setInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,14 +30,6 @@ const TodoPage = () => {
   const handleNameChange = (name) => {
     setSelectedName(name);
   };
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const recordePerPage = 4;
-  const lastIndex = currentPage * recordePerPage;
-  const firstIndex = lastIndex - recordePerPage;
-  const records = users.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(users.length / recordePerPage);
-  const numbers = [...Array(npage + 1).keys()].slice(1);
 
   // Search names
   const searchName = async (e) => {
@@ -52,26 +46,13 @@ const TodoPage = () => {
     if (result) {
       setFoundUsers(result);
       console.log(users);
-      console.log(foundUsers)
+      console.log(foundUsers);
     } else {
       setFoundUsers(null);
     }
 
     setSearchTerm("");
   };
-
-  // const searchUserByName = () => {
-  //   const filteredUsers = users.filter((user) =>
-  //     user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  //   );
-  //   setFoundUsers(filteredUsers);
-  // };
-
-  // const handleUserSelect = (user) => {
-  //   setSelectedUser(user);
-  //   setSearchTerm(user.name);
-  //   setFoundUsers([]);
-  // };
 
   // Read users from firebase
   useEffect(() => {
@@ -83,7 +64,7 @@ const TodoPage = () => {
       });
       setUsers(usersArr);
       setuserNames(users.name);
-      console.log(users);
+      // console.log(users);
     });
     return () => unsubscribe();
   }, []);
@@ -97,7 +78,7 @@ const TodoPage = () => {
         cardsArr.push({ ...doc.data(), id: doc.id });
       });
       setCards(cardsArr);
-      console.log(users);
+      // console.log(cards);
     });
     return () => unsubscribe();
   }, []);
@@ -107,42 +88,50 @@ const TodoPage = () => {
     const selectedUser = users.find((user) => user.name === selectedName);
     if (selectedUser) {
       setSelectedUserCards(selectedUser.cards || []);
-      console.log(selectedUserCards);
+      // console.log(selectedUserCards);
     } else {
       setSelectedUserCards([]);
     }
   }, [selectedName, users]);
 
-  const handleCardClick1 = (cardId) => {
-    // Update the selected user's cards in Firebase with the "assigned" status
-    const updatedUsers = users.map((user) => {
-      if (user.name === selectedName) {
-        user.cards.forEach((card) => {
-          if (card.id === cardId) {
-            card.assigned = true;
-          }
-        });
-      }
-      return user;
-    });
-
-    // Update Firestore with the new data
-    db.collection("users")
-      .doc(selectedName)
-      .set({ cards: updatedUsers[0].cards }, { merge: true });
-  };
-
   // Update cards in firebase
-  const handleCardClick = async (card) => {
-    // await updateDoc(doc(db, "allcards", card.id), {
-    //   assigned: !card.assigned,
-    // });
-    console.log("you clicked on ", { card });
+  const handleCardClick = async (selectedCard) => {
+    const cardsCollection = collection(db, "allcards");
+    const q = query(cardsCollection, where("cardno", "==", selectedCard));
+
+    try {
+      // Execute the query
+      const querySnapshot = await getDocs(q);
+
+      // Iterate through the documents and access the data
+      querySnapshot.forEach((doc) => {
+        const cardData = doc.data();
+        console.log("Matching Card Data:", cardData);
+
+        // Update the 'arrived' field of the document
+        updateDoc(doc.ref, {
+          arrived: !cardData.arrived,
+        });
+      });
+    } catch (error) {
+      console.error("Error updating document:", error);
+    }
   };
 
-  // Delete users
-  const deleteTodo = async (id) => {
-    await deleteDoc(doc(db, "users", id));
+  // Delete users in firebase
+  const deleteUser = async (user) => {
+    await deleteDoc(doc(db, "users", user.id));
+  };
+
+  // Delete user's card in firebase
+  const deleteCard = async (card) => {
+    console.log(card)
+   
+    // await deleteDoc(doc(db, "users", q));
+  };
+
+  const checkIt = () => {
+    setCheck(!check);
   };
 
   return (
@@ -154,40 +143,35 @@ const TodoPage = () => {
             <img src={todo} alt="todologo" />
             <figcaption>Check Your Cards Here ✌</figcaption>
           </figure>
-
-          <form onSubmit={searchName} className="formToDo">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="✍ Search Name..."
-              // className={style.input}
-            />
-            <i
-              className="fa fa-check add-btn"
-              title="Search Name"
-              onClick={searchName}
-            />
-          </form>
-
-          <div>
-            {/* {foundUsers.length > 0 && (
-              <ul>
-                {foundUsers.map((user) => (
-                  <li key={user.id} onClick={() => handleUserSelect(user)}>
-                    {user.name}
-                  </li>
-                ))}
-              </ul>
-            )} */}
-            {foundUsers && (
-              <div>
-                <h2>User Found:</h2>
-                <p>Name: {foundUsers.name}</p>
-                {/* Display other user data here */}
-              </div>
-            )}
-          </div>
+          {users.length < 1 ? null : (
+            <p>
+              {`You have ${users.length} users in your list `}
+              <span
+                onClick={checkIt}
+                style={{ cursor: "pointer", color: "green", fontWeight:"bold" }}
+              >
+                Check It Now
+              </span>
+            </p>
+          )}
+          {check ? (
+            <ul className="showItems">
+              {users.map((user, index) => {
+                return (
+                  <div className="eachItem" key={index}>
+                    <h3>{user.name.toUpperCase()} -- ({user.cards.length} Cards)</h3>
+                    <div className="todo-btn">
+                      <i
+                        className="far fa-trash-alt add-btn"
+                        title="Delete user"
+                        onClick={() => deleteUser(user)}
+                      ></i>
+                    </div>
+                  </div>
+                );
+              })}
+            </ul>
+          ) : null}
 
           <div>
             <h1>Select a Name</h1>
@@ -210,36 +194,25 @@ const TodoPage = () => {
             <ul className="showItems">
               {selectedUserCards.map((card, index) => {
                 return (
-                  <div className="eachItem2" key={index}>
-                    {/* <input onChange={() => handleCardClick(card)} type='checkbox' checked={card.assigned ? 'checked' : ''} /> */}
-
-                    <h3 onClick={() => handleCardClick(card)}>{card}</h3>
+                  <div className="eachItem" key={index}>
+                    {/* <h3 onClick={() => handleCardClick(card)}>{card}</h3> */}
+                    <h3>{card}</h3>
+                    <div className="todo-btn">
+                      <i
+                        className="far fa-trash-alt add-btn"
+                        title="Delete card"
+                        onClick={() => deleteCard(card)}
+                      ></i>
+                    </div>
                   </div>
                 );
               })}
             </ul>
           </div>
-          
         </div>
       </div>
     </div>
   );
-
-  function prePage() {
-    if (currentPage !== 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  }
-
-  function changeCPage(id) {
-    setCurrentPage(id);
-  }
-
-  function nextPage() {
-    if (currentPage !== npage) {
-      setCurrentPage(currentPage + 1);
-    }
-  }
 };
 
-export default TodoPage;
+export default UserList;

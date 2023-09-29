@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -33,33 +34,5 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const db = getFirestore(app)
 
-
-
-// export const addUser = async (name, cardNumber) => {
-//   try {
-//     await db.collection('users').add({
-//       name,
-//       cardNumber,
-//     });
-//     console.log('User added to Firebase');
-//   } catch (error) {
-//     console.error('Error adding user to Firebase:', error);
-//     throw error;
-//   }
-// };
-
-// export const getUserByName = async (name) => {
-//   try {
-//     const querySnapshot = await db
-//       .collection('users')
-//       .where('name', '==', name)
-//       .get();
-
-//     const userData = querySnapshot.docs.map((doc) => doc.data());
-
-//     return userData;
-//   } catch (error) {
-//     console.error('Error retrieving user data from Firebase:', error);
-//     throw error;
-//   }
-// };
+// Initialize Firebase Authentication and get a reference to the service
+export const auth = getAuth(app);

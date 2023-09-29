@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import todo from "../../assets/todo_list.jpg"
 import "./todo.css"
 import { collection, deleteDoc, doc, onSnapshot, query, updateDoc } from 'firebase/firestore';
-import { db } from '../todo2/firebase';
+import { db } from './firebase';
 
 const CardList = () => {
     const [cards, setCards] = useState([]);
@@ -10,6 +10,8 @@ const CardList = () => {
     const [filter, setFilter] = useState('all');
     const [selectedName, setSelectedName] = useState("");
     const [selectedUserCard, setSelectedUserCard] = useState("");
+
+
 
    
     // Read cards from firebase
@@ -35,7 +37,7 @@ const CardList = () => {
 
     const toggleCompleted = (index) => {
         const newCards = [...cards];
-        newCards[index].assigned = !newCards[index].assigned;
+        newCards[index].arrived = !newCards[index].arrived;
         setCards(newCards);
     };
 
@@ -49,28 +51,11 @@ const CardList = () => {
         }
       }, [selectedName, cards]);
 
-    const handleCardClick = (cardId) => {
-        // Update the selected user's cards in Firebase with the "assigned" status
-        const updatedUsers = cards.map((card) => {
-          if (card.name === selectedName) {
-            // card.cards.forEach((card) => {
-              
-                card.assigned = true;
-              
-            // });
-          }
-          return card;
-        });
-    
-        // Update Firestore with the new data
-        db.collection('users').doc(selectedName).set({ cards: updatedUsers[0].cards }, { merge: true });
-
-      };
-
       // Update allcards in firebase
-  const updateAllCards = async (cards) => {
-    await updateDoc(doc(db, "allcards", cards.id), {
-      assigned: !cards.assigned,
+  const updateAllCards = async (selectedCard) => {
+    console.log("selectedCard:", selectedCard.id);
+    await updateDoc(doc(db, "allcards", selectedCard.id), {
+      arrived: !selectedCard.arrived,
     });
   };
 
@@ -80,17 +65,25 @@ const CardList = () => {
   };
 
     const filteredItems = cards.filter((card) => {
-        if (filter === 'assigned') {
-            return card.assigned
+        if (filter === 'arrived') {
+            return card.arrived
             // &&
-            // const comp = card.assigned.length
-            // setComp(card.assigned);
-        } else if (filter === 'not-assigned') {
-            return !card.assigned;
+            // const comp = card.arrived.length
+            // setComp(card.arrived);
+        } else if (filter === 'not-arrived') {
+            return !card.arrived;
         } else {
             return true;
         }
     });
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const recordePerPage = 4;
+    const lastIndex = currentPage * recordePerPage;
+    const firstIndex = lastIndex - recordePerPage;
+    const records = filteredItems.slice(firstIndex, lastIndex);
+    const npage = Math.ceil(filteredItems.length / recordePerPage)
+    const numbers = [...Array(npage + 1).keys()].slice(1)
 
     return (
         <div className='justify-content-center w-100'>
@@ -122,23 +115,23 @@ const CardList = () => {
                             <input
                                 type="radio"
                                 name="filter"
-                                value="assigned"
-                                checked={filter === 'assigned'}
-                                onChange={() => setFilter('assigned')}
+                                value="arrived"
+                                checked={filter === 'arrived'}
+                                onChange={() => setFilter('arrived')}
                             />
-                            {" "} Assigned
-                            ({filter === 'assigned' ? filteredItems.length : 0})
+                            {" "} Arrived
+                            ({filter === 'arrived' ? filteredItems.length : 0})
                         </label>
                         <label className="m-2">
                             <input
                                 type="radio"
                                 name="filter"
-                                value="not-assigned"
-                                checked={filter === 'not-assigned'}
-                                onChange={() => setFilter('not-assigned')}
+                                value="not-arrived"
+                                checked={filter === 'not-arrived'}
+                                onChange={() => setFilter('not-arrived')}
                             />
-                            {" "} Not Assigned
-                            ({filter === 'not-assigned' ? filteredItems.length : 0})
+                            {" "} Not Arrived
+                            ({filter === 'not-arrived' ? filteredItems.length : 0})
                         </label>
                     </div>
 
@@ -149,24 +142,24 @@ const CardList = () => {
                         //     event.target.reset();
                         // }}
                     >
-                        <input type="text" name="text" placeholder="✍ Add Cards..." required />
-                        <i className="fa fa-plus add-btn" title="Add Card" type="submit" />
+                        <input type="text" name="text" placeholder="✍ Search Cards..." required />
+                        <i className="fa fa-search add-btn" title="Search Card" type="submit" />
                     </form>
 
                     <ul className='showItems'>
-                        {filteredItems.map((card, index) => {
+                        {records.map((card, index) => {
 
                             return (
-                                <div className={card.assigned ? 'eachItem' : 'eachItem2'} key={index}>
-                                    <input onChange={() => updateAllCards(card)} type='checkbox' checked={card.assigned ? 'checked' : ''} />
+                                <div className={card.arrived ? 'eachItem2' : 'eachItem'} key={index}>
+                                    <input onChange={() => updateAllCards(card)} type='checkbox' checked={card.arrived ? 'checked' : ''} />
 
                                     <h3
                                         style={{
-                                            // textDecoration: card.assigned ? 'line-through' : 'none',
-                                            color: card.assigned ? 'black' : 'white',
+                                            // textDecoration: card.arrived ? 'line-through' : 'none',
+                                            color: card.arrived ? 'black' : 'white',
                                             // paddingLeft: '1rem'
                                         }}
-                                        onClick={() => handleCardClick(index)}
+                                        onClick={() => updateAllCards(card)}
                                     >
                                         {card.cardno} Assigned To {" "}
                                         {card.name}
@@ -179,14 +172,50 @@ const CardList = () => {
 
                         })}
                     </ul>
-                    {/* {filteredItems.length < 1 ? null : (
-                        <p >{`You have ${filteredItems.length} todos in your list`}</p>
-                    )} */}
+                    
+                    <div className='d-flex justify-content-center'>
+                        <ul className="pagination m-2">
+                            <li className="page-link">
+                                <i className="page-link fa-solid fa-backward"
+                                    title='Previous'
+                                    onClick={prePage} />
+                            </li>
+                            {
+                                numbers.map((n, i) => (
+                                    <li className={`page-item ${currentPage === n ? 'active' : ''}`} key={i}>
+                                        <i className="page-link"
+                                            onClick={() => changeCPage(n)}> {n} </i>
+                                    </li>
+                                ))
+                            }
+                            <li className="page-link">
+                                <i className="page-link fa-solid fa-forward"
+                                    title='Next'
+                                    onClick={nextPage} />
+                            </li>
+                        </ul>
+                    </div>
 
                 </div>
             </div>
         </div>
     );
+
+    function prePage() {
+        if (currentPage !== 1) {
+            setCurrentPage(currentPage - 1)
+        }
+    }
+
+    function changeCPage(id) {
+        setCurrentPage(id)
+    }
+
+    function nextPage() {
+        if (currentPage !== npage) {
+            setCurrentPage(currentPage + 1)
+        }
+    }
 };
 
 export default CardList;

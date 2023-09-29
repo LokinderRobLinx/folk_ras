@@ -1,51 +1,44 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
-function Home({ username, onLogout}) {
-  const [selectedName, setSelectedName] = useState('');
-  const [numOfCards, setNumOfCards] = useState(0);
-
-  const handleNameChange = (name) => {
-    setSelectedName(name);
-  };
-
-  const handleCardChange = (count) => {
-    setNumOfCards(count);
-  };
-
-  const handleLogout = () => {
-    // Call the onLogout function to log the user out
-    onLogout();
-  };
+function Home() {
 
   return (
-    <div>
-      <h1>Welcome, {username}!</h1>
-      <button onClick={handleLogout}>Logout</button>
-      <h2>Select a Name:</h2>
-      <select onChange={(e) => handleNameChange(e.target.value)}>
-        <option value="">Select a Name</option>
-        <option value="Name 1">Name 1</option>
-        <option value="Name 2">Name 2</option>
-        <option value="Name 3">Name 3</option>
-      </select>
-      {selectedName && (
-        <div>
-          <h2>Number of Cards:</h2>
-          <input
-            type="number"
-            value={numOfCards}
-            onChange={(e) => handleCardChange(e.target.value)}
-          />
-          <div>
-            {Array.from({ length: numOfCards }, (_, index) => (
-              <div key={index} className="card">
-                {selectedName}
+    <>
+      <section id="header">
+        <div className="col-md-11  ">
+          <div className="row justify-content-center align-items-center">
+            <div className="col-md-6  ">
+              <h1>
+                We Welcome's You In
+                <strong className="brand-name"> FolkRaas App</strong>
+              </h1>
+              <h2 className="my-3">
+                Here You Can Scan Your Card & Get Entry In Our Hotel
+                 </h2>
+    
+              <div className="mt-3">
+                <NavLink to="/scan" className="btn">
+                  Get Started
+                </NavLink>
               </div>
-            ))}
+            </div>
+
+            <div className="col-md-5 ">
+              <lottie-player
+                // src="https://assets8.lottiefiles.com/packages/lf20_rnnlxazi.json"
+                src="https://assets3.lottiefiles.com/packages/lf20_XyoSty.json"
+                background="transparent"
+                speed="1"
+                // style="width: 300px; height: 300px;"
+                loop
+                autoplay
+              ></lottie-player>
+            </div>
           </div>
         </div>
-      )}
-    </div>
+      </section>
+    </>
   );
 }
 

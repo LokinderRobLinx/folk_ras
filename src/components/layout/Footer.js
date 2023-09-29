@@ -7,7 +7,7 @@ const Footer = () => {
             
             {""} All Rights Reserved | Powered By {""}
             <a
-                href="https://www.google.com" target="_blank" rel="noopener noreferrer"
+                href="http://www.roblinx.com/" target="_blank" rel="noopener noreferrer"
                 style={{ cursor: "pointer" }} title="Visit The Site"
             >
                 RobLinx
