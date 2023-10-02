@@ -117,17 +117,6 @@ const QRCodeScanner = () => {
       <h1>QR Code Scanning React App</h1>
       {scanResult ? (
         <div>
-          {/* Success:{" "}
-          <a
-            href={scanResult}
-            style={{ cursor: "pointer", color: "green" }}
-            title="Visit The Site"
-            target="_blank"
-            //  rel="noopener noreferrer"
-          >
-            {scanResult}
-          </a>
-          <br /> */}
           <h3 onClick={() => handleCardClick(scanResult)}>Card Scanned: {scanResult}</h3>
           <br />
           <div id="reader" ref={videoRef}></div>

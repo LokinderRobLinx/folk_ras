@@ -64,17 +64,12 @@ function Login({onLogin}) {
                             placeholder="Enter Your Password"
                             required
                         />
-                        {/* <input type="text" ref={em} className='form-control' placeholder='email' name='email' value={input.email} onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value, })} required />
-                        <input type="password" ref={ps} className='form-control' placeholder='password' name='password' value={input.password} onChange={(e) => setInput({ ...input, [e.target.name]: e.target.value, })} required /> */}
-
 
                         <button className=' btnA my-3' onClick={handleLogin}>LOGIN</button>
-                        {/* <NavLink to="/profile" className="btnAm-3 ">
-                 LOGIN
-                </NavLink> */}
+                     
 
                         <hr />
-                        <Link to='/register'>Click Here to Register</Link>
+                        <Link style={{color: "red"}} to='/register'>Click Here to Register</Link>
 
                     </div>
                 </div>

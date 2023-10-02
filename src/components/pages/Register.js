@@ -27,7 +27,7 @@ const Register = () => {
     createUserWithEmailAndPassword(auth, input.email, input.password)
     .then((userCredential) => {
       console.log(userCredential);
-      navigate("/login1")
+      navigate("/login")
     })
     .catch((error) => {
       console.log(error);
@@ -106,7 +106,7 @@ const Register = () => {
 
               <hr />
               {/* <Link activeStyle={{ color:'green', fontWeight: 'bold'}} to="/login">Click Here to Login</Link> */}
-              <Link to="/login">
+              <Link style={{color: "red"}} to="/login">
                 Already Registered? Login
               </Link>
             </div>

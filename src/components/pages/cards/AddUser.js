@@ -4,11 +4,10 @@ import { addDoc, collection } from "firebase/firestore";
 
 function AddUser({ username }) {
   const [name, setName] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [cardNumber, setCardNumber] = useState([]);
   const [cards, setCards] = useState([]);
 
-  const [inputValue, setInputValue] = useState("");
-  //   const [cardNumber, setCardNumber] = useState([]);
 
   const addCard = (text) => {
     // const newItems = [...cards, { text, arrived: false }];
@@ -21,22 +20,18 @@ function AddUser({ username }) {
     setCards(newItems);
     // console.log(cards)
   };
+  const formSubmit = (e) => {
+    e.preventDefault();
+    const numCards = parseInt(inputValue);
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleInputKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      const newItem = inputValue.trim();
-
-      if (newItem) {
-        setCardNumber([...cardNumber, newItem]);
-        setInputValue("");
-      }
+    if (!isNaN(numCards) && numCards > 0) {
+      // Create an array of cards with numbers starting from 1
+      const newCards = Array.from({ length: numCards }, (_, index) => `Card ${index + 1}`);
+      setCards([...cards, ...newCards]);
+      setInputValue('');
     }
   };
+
 
   //   const handleAddUser = async () => {
   //     try {
@@ -52,6 +47,12 @@ function AddUser({ username }) {
     e.preventDefault(e);
     console.log(cards);
     console.log(name);
+  };
+  const resetForm = async (e) => {
+    e.preventDefault(e);
+    setName("");
+    setInputValue("");
+    setCards([]);
   };
 
   const createUser = async (e) => {
@@ -74,12 +75,6 @@ function AddUser({ username }) {
         name: name,
       })
     );
-
-    // addDoc(collection(db, "allcards"), {
-    //   cardno: inputValue,
-    //   arrived: false,
-    //   name: name
-    // });
 
     setName("");
     setCardNumber([]);
@@ -107,24 +102,18 @@ function AddUser({ username }) {
     alert("Cards data submitted");
   };
 
-  const formSubmit = (e) => {
-    e.preventDefault();
-    addCard(e.target.elements.text.value);
-    e.target.reset();
-  };
+  // const formSubmit = (e) => {
+  //   e.preventDefault();
+  //   addCard(e.target.elements.text.value);
+  //   e.target.reset();
+  // };
+
 
   return (
     <div className="justify-content-center">
-      <h1 className="mb-4 text-success">Add Users</h1>
+      <h1 className="mb-4 text-success">Add Customer</h1>
 
-      {/* <input
-        type="text"
-        placeholder="Enter CardNumber"
-        value={inputValue}
-        onChange={handleInputChange}
-        onKeyDown={handleInputKeyDown}
-      /> */}
-      <form className="addItems">
+      <form className="addItems" onSubmit={formSubmit}>
         <input
           type="text"
           placeholder="Name"
@@ -132,21 +121,34 @@ function AddUser({ username }) {
           onChange={(e) => setName(e.target.value)}
           required
         />
+        <input
+          type="number"
+          name="text"
+          placeholder="✍ Enter number of cards..."
+          required
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        <button type="submit" title="Add Cards">
+          <i className="fa fa-plus" />
+        </button>
       </form>
 
-      <form className="addItems" onSubmit={formSubmit}>
+       {/* <i className="fa fa-plus add-btn" title="Add Card" type="submit" /> */}
+      {/* <form className="addItems" onSubmit={formSubmit}>
         <input type="text" name="text" placeholder="✍ Add cards..." required />
-        <i className="fa fa-plus add-btn" title="Add Card" type="submit" />
-        {/* <button type="submit" title="Add Card">
+        <button type="submit" title="Add Card">
           <i className="fa fa-plus" />
-        </button> */}
-      </form>
+        </button>
+      </form> */}
+
+
 
       <ul className="showItems">
         {cards.map((item, index) => {
           return (
             <div
-              className={item.arrived ? "eachItem2" : "eachItem"}
+              className="eachItem"
               key={index}
             >
               <h3>{item}</h3>
@@ -165,6 +167,7 @@ function AddUser({ username }) {
       <button onClick={createUser}>Add User</button>
       <button onClick={checkUser}>Check User</button>
       <button onClick={createCard}>Add Card</button>
+      <button onClick={resetForm}>Reset</button>
 
       {/* <ul className="showCards">
           {cardNumber.map((item, index) => (

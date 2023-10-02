@@ -136,7 +136,7 @@ const UserList = () => {
 
   return (
     <div className="justify-content-center w-100">
-      <h1 className="mb-4 text-success">Users List</h1>
+      <h1 className="mb-4 text-success">Customers List</h1>
       <div className="main-div">
         <div className="child-div">
           <figure>
@@ -145,7 +145,7 @@ const UserList = () => {
           </figure>
           {users.length < 1 ? null : (
             <p>
-              {`You have ${users.length} users in your list `}
+              {`You have ${users.length} customers in your list `}
               <span
                 onClick={checkIt}
                 style={{ cursor: "pointer", color: "green", fontWeight:"bold" }}

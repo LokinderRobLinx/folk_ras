@@ -53,12 +53,12 @@ const Navbar = ({ username, onLogout }) => {
                     </li>
                     <li className="nav-item">
                       <NavLink className="nav-link" to="/add-user">
-                        Add User
+                        Add
                       </NavLink>
                     </li>
                     <li className="nav-item">
                       <NavLink className="nav-link" to="/users">
-                        Users
+                        Customers
                       </NavLink>
                     </li>
                     <li className="nav-item">
@@ -113,7 +113,7 @@ const Navbar = ({ username, onLogout }) => {
                     </li>
                     <li className="nav-item">
                       <NavLink className="nav-link" to="/get-users">
-                        Users
+                        Customers
                       </NavLink>
                     </li>
                     <li className="nav-item">

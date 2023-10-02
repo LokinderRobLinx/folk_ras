@@ -23,6 +23,7 @@ import GetCards from "./components/pages/scan/GetCards";
 import GetUsers from "./components/pages/scan/GetUsers";
 import AddUser from "./components/pages/cards/AddUser";
 import Login1 from "./components/pages/Login";
+import AddCustomers from "./components/pages/cards/AddCustomers";
 // import AddUser from "./components/projects/card/AddUser";
 // import GetUser from "./components/projects/card/GetUser";
 
@@ -30,7 +31,8 @@ function App() {
   const [user, setUser] = useState(null);
 
   const handleLogin = (username) => {
-    setUser(username);
+    setUser(username.slice(0, 5));
+    // const first6Letters = username.slice(0, 6);
   };
 
   const handleLogout = () => {
@@ -43,46 +45,49 @@ function App() {
       <>
         <Navbar username={user} onLogout={handleLogout} />
         <div className="main">
-          {!user ? (
+          {user ? (
             // <Login onLogin={handleLogin} />
             <Routes>
-              <Route
-                path="/login1"
-                exact
-                element={<Login1 onLogin={handleLogin} />}
-              />
-              <Route path="/register" exact element={<Register />} />
-              <Route path="/" exact element={<Home />} />
+             
+            {/* <Route path="/login" exact element={<Login onLogin={handleLogin} />} /> */}
+            <Route path="/" exact element={<Home />} />
+            <Route path="/add" exact element={<AddCustomers />} />
 
-              <Route path="/about" exact element={<About />} />
-              <Route path="/contact" exact element={<Contact />} />
+            <Route path="/about" exact element={<About />} />
+            <Route path="/contact" exact element={<Contact />} />
 
-              <Route path="/scan" exact element={<QRCodeScanner />} />
-              <Route path="/get-cards" exact element={<GetCards />} />
-              <Route path="/get-users" exact element={<GetUsers />} />
+            <Route path="/scan" exact element={<QRCodeScanner />} />
+            <Route path="/add-user" exact element={<AddUser username={user} />} />
+            <Route path="/cards" exact element={<CardList />} />
+            <Route path="/users" exact element={<UserList />} />
 
-              <Route path="/clock" exact element={<Clock />} />
+            <Route path="/clock" exact element={<Clock />} />
 
-              <Route path="*" element={<Errorpage />} />
-            </Routes>
+            <Route path="*" element={<Errorpage />} />
+          </Routes>
           ) : (
             <Routes>
-             
-              <Route path="/login" exact element={<Login onLogin={handleLogin} />} />
-              <Route path="/" exact element={<Home />} />
+            <Route
+              path="/login"
+              exact
+              element={<Login1 onLogin={handleLogin} />}
+            />
+            <Route path="/register" exact element={<Register />} />
+            <Route path="/" exact element={<Home />} />
+            <Route path="/add" exact element={<AddCustomers />} />
 
-              <Route path="/about" exact element={<About />} />
-              <Route path="/contact" exact element={<Contact />} />
+            <Route path="/about" exact element={<About />} />
+            <Route path="/contact" exact element={<Contact />} />
 
-              <Route path="/scan" exact element={<QRCodeScanner />} />
-              <Route path="/add-user" exact element={<AddUser username={user} />} />
-              <Route path="/cards" exact element={<CardList />} />
-              <Route path="/users" exact element={<UserList />} />
+            <Route path="/scan" exact element={<QRCodeScanner />} />
+            <Route path="/get-cards" exact element={<GetCards />} />
+            <Route path="/get-users" exact element={<GetUsers />} />
 
-              <Route path="/clock" exact element={<Clock />} />
+            <Route path="/clock" exact element={<Clock />} />
 
-              <Route path="*" element={<Errorpage />} />
-            </Routes>
+            <Route path="*" element={<Errorpage />} />
+          </Routes>
+           
           )}
         </div>
         <Footer />
