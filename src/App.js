@@ -13,7 +13,7 @@ import Errorpage from "./components/pages/Errorpage";
 
 import CardList from "./components/pages/cards/CardList";
 import UserList from "./components/pages/cards/UserList";
-import QRCodeScanner from "./components/pages/scan/QRCodeScanner";
+import QRCodeScanner from "./components/pages/scan/QRCodeScanner1";
 
 import Clock from "./components/pages/clock/Clock";
 

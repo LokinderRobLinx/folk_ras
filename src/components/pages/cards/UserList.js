@@ -141,11 +141,11 @@ const UserList = () => {
         <div className="child-div">
           <figure>
             <img src={todo} alt="todologo" />
-            <figcaption>Check Your Cards Here ✌</figcaption>
+            <figcaption>Check The Customers Here ✌</figcaption>
           </figure>
           {users.length < 1 ? null : (
             <p>
-              {`You have ${users.length} customers in your list `}
+              {`There are ${users.length} customers in the list `}
               <span
                 onClick={checkIt}
                 style={{ cursor: "pointer", color: "green", fontWeight:"bold" }}
@@ -174,19 +174,19 @@ const UserList = () => {
           ) : null}
 
           <div>
-            <h1>Select a Name</h1>
+            <h1>Select a Customer</h1>
             <select
               onChange={(e) => handleNameChange(e.target.value)}
               value={selectedName}
             >
-              <option value="">Select a Name</option>
+              <option value="">Select a Customer</option>
               {users.map((u, i) => (
                 <option key={i} value={u.name}>
                   {u.name}
                 </option>
               ))}
             </select>
-            {selectedName && <p>Selected Name: {selectedName}</p> && (
+            {selectedName && (
               <h2>
                 Cards for {selectedName} = {selectedUserCards.length}
               </h2>

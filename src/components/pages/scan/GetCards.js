@@ -74,10 +74,10 @@ const GetCards = () => {
         <div className="child-div">
           <figure>
             <img src={todo} alt="todologo" />
-            <figcaption>Mennage Card List Here ✌</figcaption>
+            <figcaption>View Card List Here ✌</figcaption>
           </figure>
           {cards.length < 1 ? null : (
-            <p>{`You have ${cards.length} cards in your list`}</p>
+            <p>{`There are ${cards.length} cards in the list`}</p>
           )}
 
           <div>
@@ -157,7 +157,7 @@ const GetCards = () => {
                     }}
                     // onClick={() => updateAllCards(card)}
                   >
-                    {card.cardno} Assigned To {card.name}
+                    {card.cardno} --- {card.name}
                   </h3>
                 </div>
               );

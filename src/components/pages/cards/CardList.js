@@ -141,7 +141,7 @@ const CardList = () => {
             <figcaption>Mennage Card List Here ✌</figcaption>
           </figure>
           {cards.length < 1 ? null : (
-            <p>{`You have ${cards.length} cards in your list`}</p>
+            <p>{`There are ${cards.length} cards in the list`}</p>
           )}
 
           <div>
