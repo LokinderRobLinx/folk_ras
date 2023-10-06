@@ -136,16 +136,16 @@ const UserList = () => {
 
   return (
     <div className="justify-content-center w-100">
-      <h1 className="mb-4 text-success">Customers List</h1>
+      <h1 className="mb-4 text-success">Users List</h1>
       <div className="main-div">
         <div className="child-div">
           <figure>
             <img src={todo} alt="todologo" />
-            <figcaption>Check The Customers Here ✌</figcaption>
+            <figcaption>Check The Users Here ✌</figcaption>
           </figure>
           {users.length < 1 ? null : (
             <p>
-              {`There are ${users.length} customers in the list `}
+              {`There are ${users.length} users in the list `}
               <span
                 onClick={checkIt}
                 style={{ cursor: "pointer", color: "green", fontWeight:"bold" }}
@@ -174,12 +174,12 @@ const UserList = () => {
           ) : null}
 
           <div>
-            <h1>Select a Customer</h1>
+            <h1>Select a User</h1>
             <select
               onChange={(e) => handleNameChange(e.target.value)}
               value={selectedName}
             >
-              <option value="">Select a Customer</option>
+              <option value="">Select a User</option>
               {users.map((u, i) => (
                 <option key={i} value={u.name}>
                   {u.name}

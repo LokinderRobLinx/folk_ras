@@ -3,7 +3,7 @@ import { db } from "../cards/firebase";
 import { addDoc, collection } from "firebase/firestore";
 
 function AddUser({ username }) {
-  const [name, setName] = useState("");
+  const [user, setUser] = useState("");
   const [inputValue, setInputValue] = useState('');
   const [cardNumber, setCardNumber] = useState([]);
   const [cards, setCards] = useState([]);
@@ -26,7 +26,7 @@ function AddUser({ username }) {
 
     if (!isNaN(numCards) && numCards > 0) {
       // Create an array of cards with numbers starting from 1
-      const newCards = Array.from({ length: numCards }, (_, index) => `Card ${index + 1}`);
+      const newCards = Array.from({ length: numCards }, (_, index) => (  user ? ` ${user}-${index + 1}` : ` ${username}-${index + 1}`) );
       setCards([...cards, ...newCards]);
       setInputValue('');
     }
@@ -46,18 +46,18 @@ function AddUser({ username }) {
   const checkUser = async (e) => {
     e.preventDefault(e);
     console.log(cards);
-    console.log(name);
+    console.log(user);
   };
   const resetForm = async (e) => {
     e.preventDefault(e);
-    setName("");
+    setUser("");
     setInputValue("");
     setCards([]);
   };
 
   const createUser = async (e) => {
     e.preventDefault(e);
-    if (name === "") {
+    if (user === "") {
       alert("Please enter a valid name");
       return;
     } else if (cards.length === 0) {
@@ -65,18 +65,19 @@ function AddUser({ username }) {
       return;
     }
     await addDoc(collection(db, "users"), {
-      name: name,
+      name: user,
       cards: cards,
     });
     await cards.map((n, i) =>
       addDoc(collection(db, "allcards"), {
         cardno: n,
         arrived: false,
-        name: name,
+        user: user,
+        customer: "",
       })
     );
 
-    setName("");
+    setUser("");
     setCardNumber([]);
     setCards([]);
     alert("User data submitted");
@@ -88,15 +89,20 @@ function AddUser({ username }) {
       alert("Please enter cards details");
       return;
     }
+    await addDoc(collection(db, "users"), {
+      name: username,
+      cards: cards,
+    });
     await cards.map((n, i) =>
       addDoc(collection(db, "allcards"), {
         cardno: n,
         arrived: false,
-        name: username,
+        user: username,
+        customer: "",
       })
     );
 
-    setName("");
+    setUser("");
     setCardNumber([]);
     setCards([]);
     alert("Cards data submitted");
@@ -111,15 +117,15 @@ function AddUser({ username }) {
 
   return (
     <div className="justify-content-center">
-      <h1 className="mb-4 text-success">Add Customer</h1>
+      <h1 className="mb-4 text-success">Add Cards</h1>
 
       <form className="addItems" onSubmit={formSubmit}>
         <input
           type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
+          placeholder="User Name"
+          value={user}
+          onChange={(e) => setUser(e.target.value)}
+          // required
         />
         <input
           type="number"

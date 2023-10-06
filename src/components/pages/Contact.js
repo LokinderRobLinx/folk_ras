@@ -50,7 +50,7 @@ const Contact = () => {
             </label>
             <input
               type="text"
-              // class="form-control"
+              // className="form-control"
               // id="exampleFormControlInput1"
               id="name"
               name="fullname"
@@ -65,7 +65,7 @@ const Contact = () => {
             <label className="px-3 h5">Phone:</label>
             <input
               type="number"
-              // class="form-control"
+              // className="form-control"
               // id="exampleFormControlInput1"
               name="phone"
               value={data.phone}

@@ -99,7 +99,7 @@ const GetUsers = () => {
 
   return (
     <div className="justify-content-center w-100">
-    <h1 className="mb-4 text-success">Users List</h1>
+    <h1 className="mb-4 text-success">Customers List</h1>
     <div className="main-div">
       <div className="child-div">
         <figure>

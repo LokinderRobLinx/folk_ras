@@ -24,7 +24,7 @@ const CardList = () => {
   const [selectedCard, setSelectedCard] = useState(null);
 
   // console.log(search);
-  const searchKeys = ["cardno", "name"];
+  const searchKeys = ["cardno", "customer"];
 
   // Read cards from firebase
   useEffect(() => {
@@ -54,7 +54,7 @@ const CardList = () => {
 
   useEffect(() => {
     // Find the selected user and update the selectedUserCards state
-    const selectedUser = cards.find((card) => card.name === selectedName);
+    const selectedUser = cards.find((card) => card.user === selectedName);
     if (selectedUser) {
       setSelectedUserCard(selectedUser.cardno || "");
     } else {
@@ -97,7 +97,7 @@ const CardList = () => {
   const updateCardInFirebase = async (cardId, newName) => {
     console.log("editing", cardId);
         await updateDoc(doc(db, "allcards", cardId), {
-          name: newName,
+          customer: newName,
         });
         setSelectedCard(null);
         setIsEditing(false);
@@ -233,7 +233,7 @@ const CardList = () => {
                         }}
                         onClick={() => updateAllCards(card)}
                       >
-                        {card.cardno} --- {card.name}
+                         ({card.cardno} --- {card.customer ? card.customer : " X "}){card.user}
                       </h3>
                       <div className="todo-btn">
                         <i

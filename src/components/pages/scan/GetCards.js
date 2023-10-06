@@ -12,7 +12,7 @@ const GetCards = () => {
   const [selectedName, setSelectedName] = useState("");
   const [selectedUserCard, setSelectedUserCard] = useState("");
 
-  const searchKeys = ["cardno", "name"];
+  const searchKeys = ["cardno", "customer"];
 
   // Read cards from firebase
   useEffect(() => {
@@ -126,7 +126,7 @@ const GetCards = () => {
             <input
               type="text"
               name="text"
-              placeholder="✍ Search Card or Name..."
+              placeholder="✍ Search Card or Customer..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               required
@@ -157,7 +157,7 @@ const GetCards = () => {
                     }}
                     // onClick={() => updateAllCards(card)}
                   >
-                    {card.cardno} --- {card.name}
+                    {card.cardno} --- {card.customer}
                   </h3>
                 </div>
               );

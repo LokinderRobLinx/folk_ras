@@ -44,7 +44,7 @@ const Navbar = ({ username, onLogout }) => {
             <div className={`collapse navbar-collapse ${show ? "show" : ""}`}>
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 {/* {loggedInNav ? ( */}
-                {username ? (
+                {username === "lokin" ? (
                   <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li className="nav-item">
                       <NavLink className="nav-link" to="/scan">
@@ -58,6 +58,11 @@ const Navbar = ({ username, onLogout }) => {
                     </li>
                     <li className="nav-item">
                       <NavLink className="nav-link" to="/users">
+                        Users
+                      </NavLink>
+                    </li>
+                    <li className="nav-item">
+                      <NavLink className="nav-link" to="/customers">
                         Customers
                       </NavLink>
                     </li>
@@ -75,12 +80,12 @@ const Navbar = ({ username, onLogout }) => {
                         aria-expanded="false"
                       >
                         {/* {loggeduser.name} */}
-                        {username}
+                        {username == "lokin" ? "Admin" : "User"}
                       </NavLink>
                       <ul className="dropdown-menu">
                         <li>
                           <NavLink to="/profile" className="dropdown-item">
-                            Profile
+                          {username}
                           </NavLink>
                         </li>
                         <li>
@@ -104,7 +109,7 @@ const Navbar = ({ username, onLogout }) => {
                       </ul>
                     </li>
                   </ul>
-                ) : (
+                ) : username === "viraj" ? (
                   <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li className="nav-item">
                       <NavLink className="nav-link" to="/scan">
@@ -121,11 +126,52 @@ const Navbar = ({ username, onLogout }) => {
                         Cards
                       </NavLink>
                     </li>
-                    {/* <li className="nav-item">
+                      <li className="nav-item dropdown">
+                      <NavLink
+                       to="/clock"
+                        type="button"
+                        className="nav-link dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        {/* {loggeduser.name} */}
+                        {username == "lokin" ? "Admin" : "User"}
+                      </NavLink>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <NavLink to="/profile" className="dropdown-item">
+                          {username}
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink to="/contact" className="dropdown-item">
+                            {/* {loggeduser.email} */}
+                            Contact
+                          </NavLink>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <NavLink
+                            to="/login"
+                            className="dropdown-item"
+                            onClick={handleLogout}
+                          >
+                            LogOut
+                          </NavLink>
+                        </li>
+                      </ul>
+                    </li>
+                    
+                  </ul>
+                ) : (
+                  <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li className="nav-item">
                       <NavLink className="nav-link" to="/about">
                         About
                       </NavLink>
-                    </li> */}
+                    </li>
                     <li className="nav-item">
                       <NavLink className="nav-link" to="/contact">
                         Contact
@@ -137,7 +183,8 @@ const Navbar = ({ username, onLogout }) => {
                       </NavLink>
                     </li>
                   </ul>
-                )}
+                )
+              }
 
                 <div className="social-links">
                   <a
@@ -146,7 +193,7 @@ const Navbar = ({ username, onLogout }) => {
                     rel="noopener noreferrer"
                     title="Facebook"
                   >
-                    <i class="fab fa-facebook-f" />
+                    <i className="fab fa-facebook-f" />
                   </a>
                   <a
                     href="https://twitter.com"
@@ -154,7 +201,7 @@ const Navbar = ({ username, onLogout }) => {
                     rel="noopener noreferrer"
                     title="Twitter"
                   >
-                    <i class="fab fa-twitter" />
+                    <i className="fab fa-twitter" />
                   </a>
                   <a
                     href="https://www.instagram.com"
@@ -162,7 +209,7 @@ const Navbar = ({ username, onLogout }) => {
                     rel="noopener noreferrer"
                     title="Instagram"
                   >
-                    <i class="fab fa-instagram" />
+                    <i className="fab fa-instagram" />
                   </a>
                   <a
                     href="https://www.linkedin.com/in/lokinder007/"
@@ -170,7 +217,7 @@ const Navbar = ({ username, onLogout }) => {
                     rel="noopener noreferrer"
                     title="LinkedIn"
                   >
-                    <i class="fab fa-linkedin-in" />
+                    <i className="fab fa-linkedin-in" />
                   </a>
                 </div>
               </ul>

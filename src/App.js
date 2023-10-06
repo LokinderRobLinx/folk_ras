@@ -29,15 +29,18 @@ import AddCustomers from "./components/pages/cards/AddCustomers";
 
 function App() {
   const [user, setUser] = useState(null);
+  // const [login, setLogin] = useState(null);
 
   const handleLogin = (username) => {
     setUser(username.slice(0, 5));
+    // (user == "lokin" ? setLogin("Admin") : setLogin("User"))
     // const first6Letters = username.slice(0, 6);
   };
 
   const handleLogout = () => {
     // Clear the user state to log out
     setUser(null);
+    // setLogin(null)
   };
 
   return (
@@ -45,50 +48,43 @@ function App() {
       <>
         <Navbar username={user} onLogout={handleLogout} />
         <div className="main">
-          {user ? (
-            // <Login onLogin={handleLogin} />
-            <Routes>
-             
-            {/* <Route path="/login" exact element={<Login onLogin={handleLogin} />} /> */}
-            <Route path="/" exact element={<Home />} />
-            <Route path="/add" exact element={<AddCustomers />} />
+        {user === "lokin" ? (
+        <Routes>
+          <Route path="/login" element={<Login1 onLogin={handleLogin} />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
 
-            <Route path="/about" exact element={<About />} />
-            <Route path="/contact" exact element={<Contact />} />
+          <Route path="/add-user" element={<AddUser username={user} />} />
+          <Route path="/add-cust" element={<AddCustomers />} />
+          <Route path="/scan" element={<QRCodeScanner />} />
+          <Route path="/cards" element={<CardList />} />
+          <Route path="/users" element={<UserList />} />
 
-            <Route path="/scan" exact element={<QRCodeScanner />} />
-            <Route path="/add-user" exact element={<AddUser username={user} />} />
-            <Route path="/cards" exact element={<CardList />} />
-            <Route path="/users" exact element={<UserList />} />
+          <Route path="*" element={<Errorpage />} />
+        </Routes>
+      ) : user === "viraj" ? (
+        <Routes>
+          <Route path="/login" element={<Login1 onLogin={handleLogin} />} />    
+          <Route path="/" element={<Home />} />
+          <Route path="/contact" element={<Contact />} />
 
-            <Route path="/clock" exact element={<Clock />} />
+          <Route path="/scan" element={<QRCodeScanner />} />
+          <Route path="/get-cards" element={<GetCards />} />
+          <Route path="/get-users" element={<GetUsers />} />
 
-            <Route path="*" element={<Errorpage />} />
-          </Routes>
-          ) : (
-            <Routes>
-            <Route
-              path="/login"
-              exact
-              element={<Login1 onLogin={handleLogin} />}
-            />
-            <Route path="/register" exact element={<Register />} />
-            <Route path="/" exact element={<Home />} />
-            <Route path="/add" exact element={<AddCustomers />} />
-
-            <Route path="/about" exact element={<About />} />
-            <Route path="/contact" exact element={<Contact />} />
-
-            <Route path="/scan" exact element={<QRCodeScanner />} />
-            <Route path="/get-cards" exact element={<GetCards />} />
-            <Route path="/get-users" exact element={<GetUsers />} />
-
-            <Route path="/clock" exact element={<Clock />} />
-
-            <Route path="*" element={<Errorpage />} />
-          </Routes>
-           
-          )}
+          <Route path="/clock" element={<Clock />} />
+          <Route path="*" element={<Errorpage />} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/login" element={<Login1 onLogin={handleLogin} />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<Errorpage />} />
+        </Routes>
+      )}
         </div>
         <Footer />
       </>

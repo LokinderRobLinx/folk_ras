@@ -1,5 +1,6 @@
 {
-  "name": "myapps",
+  "name": "folk_ras",
+  "homepage": "https://LokinderRobLinx.github.com/folk_ras",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

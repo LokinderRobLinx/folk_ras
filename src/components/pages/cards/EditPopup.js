@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const EditPopup = ({ card, onUpdate, onCancel }) => {
-  const [newName, setNewName] = useState(card.name);
+  const [newName, setNewName] = useState(card.cus_name);
 
   const handleNameChange = (e) => {
     setNewName(e.target.value);
